@@ -14,15 +14,23 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.Toast;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.yzq.zxinglibrary.android.CaptureActivity;
 import com.yzq.zxinglibrary.common.Constant;
 
+import java.util.ArrayList;
+
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    private ArrayList<Book> itemViews = new ArrayList<>();
+    BookCollection bookCollection = new BookCollection();
+    ListView listView;
+    ListViewAdapter listViewAdapter;
 
-   // private FloatingActionButton addone;
+
+    // private FloatingActionButton addone;
    // private FloatingActionButton addmany;
     int REQUEST_CODE_SCAN=10;
     @Override
@@ -58,6 +66,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        listView = (ListView)findViewById(R.id.BookList);
+        listViewAdapter = new ListViewAdapter(MainActivity.this,itemViews);
+        listView.setAdapter(listViewAdapter);
+        Initialize();
     }
 
     @Override
@@ -129,5 +143,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void Initialize(){
+        Book book = new Book();
+        book.setName("test");
+        book.setAuthor("testAuthor");
+        book.setPublishing_house("testpublisher");
+        book.setPublishing_time("testtime");
+
+        itemViews.add(book);
+        bookCollection.save(MainActivity.this.getBaseContext(),itemViews);
+        itemViews = bookCollection.read(getBaseContext());
+        //itemViews.add(book);
+
+        listViewAdapter.notifyDataSetChanged();     //不用这一句也能正常运行，可删
     }
 }
