@@ -1,34 +1,52 @@
 package com.liurui.bookshelf;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
+
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.yzq.zxinglibrary.android.CaptureActivity;
+import com.yzq.zxinglibrary.common.Constant;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
 
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    private FloatingActionButton addone;
+    private FloatingActionButton addmany;
+    int REQUEST_CODE_SCAN=10;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        //浮窗绑定
+        addone=(FloatingActionButton)findViewById(R.id.button_addone);
+        addmany=(FloatingActionButton)findViewById(R.id.button_addmany);
+        //添加书籍的点击事件
+        addone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent=new Intent(MainActivity.this, CaptureActivity.class);
+                startActivityForResult(intent,REQUEST_CODE_SCAN);
+            }
+        });
+        //批量添加的点击事件
+        addmany.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
             }
         });
 
@@ -40,6 +58,20 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode,resultCode,data);
+        switch (requestCode){
+            case 10:
+                if (resultCode==RESULT_OK){
+                    if (data!=null){
+                        String content=data.getStringExtra(Constant.CODED_CONTENT);
+                        Toast.makeText(MainActivity.this,"ISBN码是"+content,Toast.LENGTH_SHORT).show();
+                    }
+                }
+        }
     }
 
     @Override
