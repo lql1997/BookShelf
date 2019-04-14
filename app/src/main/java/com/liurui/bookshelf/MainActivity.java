@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View view) {
                 Intent intent=new Intent(MainActivity.this, CaptureActivity.class);
                 startActivityForResult(intent,REQUEST_CODE_SCAN);
+
             }
         });
         //批量添加的点击事件
@@ -71,7 +72,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         listView = (ListView)findViewById(R.id.BookList);
         listViewAdapter = new ListViewAdapter(MainActivity.this,itemViews);
         listView.setAdapter(listViewAdapter);
-        Initialize();
     }
 
     @Override
@@ -82,7 +82,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if (resultCode==RESULT_OK){
                     if (data!=null){
                         String content=data.getStringExtra(Constant.CODED_CONTENT);
-                        Toast.makeText(MainActivity.this,"ISBN码是"+content,Toast.LENGTH_SHORT).show();
+                        AddBook addBook = new AddBook();
+                        itemViews.add(addBook.add_book(content));
+                        bookCollection.save(MainActivity.this.getBaseContext(),itemViews);
+                        itemViews = bookCollection.read(getBaseContext());
+                        listViewAdapter.notifyDataSetChanged();
                     }
                 }
         }
@@ -146,17 +150,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void Initialize(){
-        Book book = new Book();
-        book.setName("test");
-        book.setAuthor("testAuthor");
-        book.setPublishing_house("testpublisher");
-        book.setPublishing_time("testtime");
 
-        itemViews.add(book);
-        bookCollection.save(MainActivity.this.getBaseContext(),itemViews);
         itemViews = bookCollection.read(getBaseContext());
         //itemViews.add(book);
 
-        listViewAdapter.notifyDataSetChanged();     //不用这一句也能正常运行，可删
+       // listViewAdapter.notifyDataSetChanged();     //不用这一句也能正常运行，可删
     }
 }
