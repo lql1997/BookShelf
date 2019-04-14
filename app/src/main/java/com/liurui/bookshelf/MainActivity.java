@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         listView = (ListView)findViewById(R.id.BookList);
         listViewAdapter = new ListViewAdapter(MainActivity.this,itemViews);
         listView.setAdapter(listViewAdapter);
+        Initialize();
     }
 
     @Override
@@ -118,6 +119,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            BookSort bs=new BookSort();
+            Log.d("fuck",itemViews.get(0).getName());
+            itemViews=bs.sort(itemViews);
+            Log.d("fuck",itemViews.get(0).getName());
+            listViewAdapter.notifyDataSetChanged();
             return true;
         }
 
@@ -150,10 +156,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void Initialize(){
+        Book book = new Book();
+        book.setName("3");
+        book.setAuthor("testAuthor");
+        book.setPublishing_house("testpublisher");
+        book.setPublishing_time("testtime");
+        itemViews.add(book);
+
+        book = new Book();
+        book.setName("2");
+        book.setAuthor("testAuthor");
+        book.setPublishing_house("testpublisher");
+        book.setPublishing_time("testtime");
+        itemViews.add(book);
+
+        bookCollection.save(MainActivity.this.getBaseContext(),itemViews);
 
         itemViews = bookCollection.read(getBaseContext());
-        //itemViews.add(book);
 
-       // listViewAdapter.notifyDataSetChanged();     //不用这一句也能正常运行，可删
+        listViewAdapter.notifyDataSetChanged();     //不用这一句也能正常运行，可删
     }
 }
