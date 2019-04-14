@@ -22,8 +22,8 @@ import com.yzq.zxinglibrary.common.Constant;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private FloatingActionButton addone;
-    private FloatingActionButton addmany;
+   // private FloatingActionButton addone;
+   // private FloatingActionButton addmany;
     int REQUEST_CODE_SCAN=10;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +32,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //浮窗绑定
-        addone=(FloatingActionButton)findViewById(R.id.button_addone);
-        addmany=(FloatingActionButton)findViewById(R.id.button_addmany);
+        FloatingActionButton addone=(FloatingActionButton)findViewById(R.id.button_addone);
+        FloatingActionButton addmany=(FloatingActionButton)findViewById(R.id.button_addmany);
         //添加书籍的点击事件
         addone.setOnClickListener(new View.OnClickListener() {
             @Override
