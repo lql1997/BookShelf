@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -22,12 +24,29 @@
 
     <include layout="@layout/content_main" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/fabmenu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        android:src="@drawable/add"
+        fab:fab_labelStyle="@style/fab_labels_style"
+        >
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/button_addone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_title="添加书籍"
+            android:src="@drawable/pen"
+            />
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/button_addmany"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_title="批量添加"
+            android:src="@drawable/pen"
+            />
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
 </android.support.design.widget.CoordinatorLayout>
