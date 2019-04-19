@@ -14,11 +14,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
+
 import com.getbase.floatingactionbutton.FloatingActionButton;
-import com.yzq.zxinglibrary.android.CaptureActivity;
-import com.yzq.zxinglibrary.common.Constant;
+
 
 import java.util.ArrayList;
 
@@ -28,10 +28,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     BookCollection bookCollection = new BookCollection();
     ListView listView;
     ListViewAdapter listViewAdapter;
+    private FloatingActionButton addone;
+    private FloatingActionButton addmany;
 
-
-    // private FloatingActionButton addone;
-   // private FloatingActionButton addmany;
     int REQUEST_CODE_SCAN=10;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,24 +39,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //浮窗绑定
-        FloatingActionButton addone=(FloatingActionButton)findViewById(R.id.button_addone);
-        FloatingActionButton addmany=(FloatingActionButton)findViewById(R.id.button_addmany);
-        //添加书籍的点击事件
-        addone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent=new Intent(MainActivity.this, CaptureActivity.class);
-                startActivityForResult(intent,REQUEST_CODE_SCAN);
-
-            }
-        });
-        //批量添加的点击事件
-        addmany.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
+        setFloatButton();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -73,8 +55,40 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         listViewAdapter = new ListViewAdapter(MainActivity.this,itemViews);
         listView.setAdapter(listViewAdapter);
         Initialize();
+
+        //listview的点击时间
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent=new Intent(MainActivity.this,Book_Detail_info_Activity.class);
+                //需要在这里传送数据
+                startActivity(intent);
+            }
+        });
     }
 
+    //浮窗绑定
+    private void setFloatButton(){
+        addone=(FloatingActionButton)findViewById(R.id.button_addone);
+        addmany=(FloatingActionButton)findViewById(R.id.button_addmany);
+        //添加书籍的点击事件
+        addone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent=new Intent(MainActivity.this, com.yzq.zxinglibrary.android.CaptureActivity.class);
+                startActivityForResult(intent,REQUEST_CODE_SCAN);
+
+            }
+        });
+        //批量添加的点击事件
+        addmany.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode,resultCode,data);
@@ -82,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case 10:
                 if (resultCode==RESULT_OK){
                     if (data!=null){
-                        String content=data.getStringExtra(Constant.CODED_CONTENT);
+                        String content=data.getStringExtra(com.yzq.zxinglibrary.common.Constant.CODED_CONTENT);
                         AddBook addBook = new AddBook();
                         itemViews.add(addBook.add_book(content));
                         bookCollection.save(MainActivity.this.getBaseContext(),itemViews);
